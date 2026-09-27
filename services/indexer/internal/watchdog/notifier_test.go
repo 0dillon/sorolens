@@ -197,6 +197,14 @@ func (f *fakeDeliveryStore) Insert(_ context.Context, d WebhookDelivery) error {
 	return nil
 }
 
+func (f *fakeDeliveryStore) ListPending(_ context.Context, limit int) ([]WebhookDelivery, error) {
+	return nil, nil
+}
+
+func (f *fakeDeliveryStore) UpdateStatus(_ context.Context, id string, status string, attempts int, nextAttemptAt time.Time, lastErr string) error {
+	return nil
+}
+
 type fakeSubStore struct {
 	subs []AlertSubscription
 	ds   *fakeDeliveryStore

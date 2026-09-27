@@ -1142,3 +1142,7 @@ func (m *MockStore) SearchContracts(_ context.Context, query string, limit int) 
 
 	return results, nil
 }
+
+func (m *MockStore) WebhookDeliveries() WebhookDeliveryStore {
+	return nil
+}

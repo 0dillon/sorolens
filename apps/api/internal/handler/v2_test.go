@@ -1,4 +1,4 @@
-package handler_test
+﻿package handler_test
 
 import (
 	"context"
@@ -252,7 +252,7 @@ func TestV2CoversEveryV1Route(t *testing.T) {
 	}
 
 	// v1 routes that were added upstream after the v2 namespace was frozen.
-	// v2 is a curated, envelope-stable surface (see ARCHITECTURE §5.5 and
+	// v2 is a curated, envelope-stable surface (see ARCHITECTURE Â§5.5 and
 	// docs/api-v2.md), so these stay v1-only until they are given the v2
 	// envelope. Keeping the list explicit means a *new* v1 route without a v2
 	// twin still fails this test.
@@ -272,6 +272,7 @@ func TestV2CoversEveryV1Route(t *testing.T) {
 		"GET /api/v1/contracts/{id}/snapshot.json":    true,
 		"GET /api/v1/stream/events":                   true,
 		"GET /api/v1/watchdog/subscriptions":          true,
+		"GET /api/v1/watchdog/subscriptions/{id}/deliveries": true,
 		"POST /api/v1/watchdog/subscriptions":         true,
 		"DELETE /api/v1/watchdog/subscriptions/{id}":  true,
 		"GET /api/v1/watchdog/contracts/{id}/uptime":  true,
@@ -401,3 +402,4 @@ func TestV2EventsFallBackToColdStorage(t *testing.T) {
 		t.Errorf("want no cold lookup without a from bound, got %d", cold.calls)
 	}
 }
+

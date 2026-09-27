@@ -134,3 +134,7 @@ func TestRouter_StreamIsNotCappedByRequestTimeout(t *testing.T) {
 		t.Errorf("stream stayed open %v; StreamTimeout did not close it", elapsed)
 	}
 }
+
+func (m *stuckStore) WebhookDeliveries() store.WebhookDeliveryStore {
+	return nil
+}

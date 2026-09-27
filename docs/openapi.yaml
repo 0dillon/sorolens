@@ -3329,6 +3329,20 @@ paths:
                 $ref: "#/components/schemas/Error"
 
 
+  /api/v1/watchdog/subscriptions/{id}/deliveries:
+    get:
+      summary: List webhook deliveries for a subscription
+      tags: [Watchdog]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+
 components:
   securitySchemes:
     ApiKeyAuth:
