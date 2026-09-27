@@ -100,6 +100,16 @@ func main() {
 	}
 	watchdogEnabled := os.Getenv("WATCHDOG_ENABLED") == "true"
 	watchdogContractID := os.Getenv("WATCHDOG_CONTRACT_ID")
+	
+	if watchdogEnabled {
+		if subStore, ok := storeAny.(watchdog.AlertSubscriptionStore); ok {
+			retryWorker := watchdog.NewRetryWorker(subStore, log, watchdog.RetryWorkerConfig{})
+			go func() {
+				defer reportPanic()
+				retryWorker.Run(ctx)
+			}()
+		}
+	}
 
 	for k, c := range clients {
 		clients[k] = &watchdogInterceptor{

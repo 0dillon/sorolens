@@ -112,6 +112,8 @@ type AlertSubscription struct {
 	RoutingKey string
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+	LastDeliveryStatus *string
+	LastDeliveryAt *time.Time
 }
 
 // Role names for role-based access control.
@@ -231,4 +233,17 @@ type ContractVerification struct {
 	SubmittedAt    time.Time
 	VerifiedAt     *time.Time
 	UpdatedAt      time.Time
+}
+// WebhookDelivery represents a scheduled or completed webhook request.
+type WebhookDelivery struct {
+	ID             string    json:"id"
+	SubscriptionID string    json:"subscription_id"
+	AlertPayload   []byte    json:"alert_payload"
+	Status         string    json:"status" // 'pending', 'success', 'failed'
+	Attempts       int       json:"attempts"
+	MaxAttempts    int       json:"max_attempts"
+	NextAttemptAt  time.Time json:"next_attempt_at"
+	LastError      string    json:"last_error,omitempty"
+	CreatedAt      time.Time json:"created_at"
+	UpdatedAt      time.Time json:"updated_at"
 }

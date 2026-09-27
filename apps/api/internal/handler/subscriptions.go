@@ -219,3 +219,21 @@ func (h *Handler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusNoContent)
 }
+
+// ListDeliveries handles GET /api/v1/watchdog/subscriptions/{id}/deliveries.
+func (h *Handler) ListDeliveries(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	
+	limit := 50
+	offset := 0
+	
+	deliveriesStore := h.Store.WebhookDeliveries()
+	deliveries, err := deliveriesStore.ListBySubscription(r.Context(), id, limit, offset)
+	if err != nil {
+		h.Logger.Error("list deliveries", "err", err)
+		writeError(w, r, http.StatusInternalServerError, CodeInternal, "failed to list deliveries")
+		return
+	}
+	
+	writeJSON(w, http.StatusOK, map[string]any{"deliveries": deliveries})
+}

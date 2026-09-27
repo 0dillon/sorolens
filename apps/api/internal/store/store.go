@@ -92,6 +92,7 @@ type Store interface {
 	// GetLatestContractVersion returns the most recently seen ContractVersion for
 	// the given contract. Returns ErrNotFound when no version has been recorded yet.
 	GetLatestContractVersion(ctx context.Context, contractID string) (ContractVersion, error)
+	WebhookDeliveries() WebhookDeliveryStore
 }
 
 // AlertSubscriptionStore is the read/write surface for alert webhook subscriptions.
@@ -203,4 +204,18 @@ func ValidContractSort(col string) bool {
 // NewStore returns a Store backed by the given pgxpool.Pool.
 func NewStore(pool *pgxpool.Pool) Store {
 	return &postgresStore{pool: pool}
+}
+// WebhookDeliveryStore manages pending and completed webhook deliveries.
+type WebhookDeliveryStore interface {
+	// Insert creates a new delivery record.
+	Insert(ctx context.Context, d WebhookDelivery) error
+	
+	// ListPending returns up to limit deliveries that are ready to be sent.
+	ListPending(ctx context.Context, limit int) ([]WebhookDelivery, error)
+	
+	// UpdateStatus updates the delivery status, attempts, next_attempt_at, and last_error.
+	UpdateStatus(ctx context.Context, id string, status string, attempts int, nextAttemptAt time.Time, lastErr string) error
+	
+	// ListBySubscription returns a paginated list of deliveries for a subscription.
+	ListBySubscription(ctx context.Context, subID string, limit int, offset int) ([]WebhookDelivery, error)
 }
