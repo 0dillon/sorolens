@@ -117,7 +117,7 @@ export function CmdkSearch() {
             <Command.Group heading="Commands" className="text-xs font-semibold text-[var(--color-text-secondary)] mb-2 px-2 mt-4 first:mt-0">
               <Command.Item
                 onSelect={() => {
-                  router.push(/contracts/new);
+                  router.push("/contracts/new");
                   setOpen(false);
                 }}
                 className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--color-text-primary)] rounded-md cursor-pointer data-[selected=true]:bg-[var(--color-bg-hover)] data-[selected=true]:text-[var(--color-text-primary)]"
